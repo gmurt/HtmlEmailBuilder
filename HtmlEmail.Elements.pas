@@ -45,7 +45,7 @@ type
     FClass: string;
     FSelected: Boolean;
     FCss: TCssClass;
-    function GetStyle2: TCssClass;
+    function GetStyle: TCssClass;
     function GetAttribute(AName: string): string;
     function GetDisplayName: string; virtual;
     procedure SetAttribute(AName: string; const Value: string);
@@ -58,8 +58,6 @@ type
     function GetContent: string;
     procedure SetContent(const Value: string);
     function GetUuid: string;
-    function GetStyle(AProperty: TCssProperty): string;
-    procedure SetStyle(AProperty: TCssProperty; AValue: string);
   protected
     function IgnoreClosingTag: Boolean; virtual;
     function GetTag: string; virtual; abstract;
@@ -378,12 +376,7 @@ begin
   Result := FSelected;
 end;
 
-function TBaseElement.GetStyle(AProperty: TCssProperty): string;
-begin
-  Result := FCss[AProperty].Value;
-end;
-
-function TBaseElement.GetStyle2: TCssClass;
+function TBaseElement.GetStyle: TCssClass;
 begin
   Result := FCss;
 end;
@@ -421,11 +414,6 @@ end;
 procedure TBaseElement.SetSelected(const Value: Boolean);
 begin
   FSelected := Value;
-end;
-
-procedure TBaseElement.SetStyle(AProperty: TCssProperty; AValue: string);
-begin
-  FCss[AProperty].Value := AValue;
 end;
 
 { TElementParagraph }

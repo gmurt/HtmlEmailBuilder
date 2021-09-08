@@ -39,6 +39,12 @@ type
   TCssProperty = (Background,
                   BackgroundColor,
                   Border,
+                  BorderLeft,
+                  BorderTop,
+                  BorderRight,
+                  BorderBottom,
+                  BorderColor,
+                  BorderStyle,
                   Color,
                   Cursor,
                   Display,
@@ -51,6 +57,10 @@ type
                   LetterSpacing,
                   LineHeight,
                   Margin,
+                  MarginLeft,
+                  MarginTop,
+                  MarginRight,
+                  MarginBottom,
                   MaxWidth,
                   Padding,
                   PaddingLeft,
@@ -118,13 +128,11 @@ type
   IHtmlElement = interface
     ['{08B1724A-4C2B-487C-9854-5DBD77902B33}']
 
-    function GetStyle2: TCssClass;
+    function GetStyle: TCssClass;
 
     function GetContent: string;
     function GetAttribute(AName: string): string;
     function GetAttributesSingleLine: string;
-    function GetStyle(AProperty: TCssProperty): string;
-    procedure SetStyle(AProperty: TCssProperty; AValue: string);
     procedure SetAttribute(AName: string; const Value: string);
     procedure SetContent(const Value: string);
     function GetUuid: string;
@@ -140,7 +148,7 @@ type
     property DisplayName: string read GetDisplayName;
     property Elements: IElementList read GetElements;
     property Selected: Boolean read GetSelected write SetSelected;
-    property Style: TCssClass read GetStyle2;
+    property Style: TCssClass read GetStyle;
     property CssClass: string read GetCssClass write SetCssClass;
     property Content: string read GetContent write SetContent;
     property Attribute[AName: string]: string read GetAttribute write SetAttribute;
@@ -253,15 +261,23 @@ type
     property Item[AProperty: TCssProperty]: TCssValue read GetItem; default;
     property Items: TObjectList<TCssValue> read FCssValues;
     property AsString: string read GetAsSingleLine write SetAsString;
-
     property Background: string index Background read GetCssValue write SetCssValue;
     property Border: string index Border read GetCssValue write SetCssValue;
+    property BorderLeft: string index BorderLeft read GetCssValue write SetCssValue;
+    property BorderTop: string index BorderTop read GetCssValue write SetCssValue;
+    property BorderRight: string index BorderRight read GetCssValue write SetCssValue;
+    property BorderBottom: string index BorderBottom read GetCssValue write SetCssValue;
     property Color: string index Color read GetCssValue write SetCssValue;
     property Font: string index Font read GetCssValue write SetCssValue;
     property FontSize: string index FontSize read GetCssValue write SetCssValue;
+    property FontWeight: string index FontWeight read GetCssValue write SetCssValue;
     property Height: string index Height read GetCssValue write SetCssValue;
     property LetterSpacing: string index LetterSpacing read GetCssValue write SetCssValue;
     property Margin: string index Margin read GetCssValue write SetCssValue;
+    property MarginLeft: string index MarginLeft read GetCssValue write SetCssValue;
+    property MarginRight: string index MarginRight read GetCssValue write SetCssValue;
+    property MarginTop: string index MarginTop read GetCssValue write SetCssValue;
+    property MarginBottom: string index MarginBottom read GetCssValue write SetCssValue;
     property MaxWidth: string index MaxWidth read GetCssValue write SetCssValue;
     property Padding: string index Padding read GetCssValue write SetCssValue;
     property PaddingLeft: string index PaddingLeft read GetCssValue write SetCssValue;
@@ -319,11 +335,16 @@ implementation
 uses SysUtils, HtmlEmail.Elements;
 
 const
-  TCssItemNameLookup: array[1..23] of TCssItemName =
+  TCssItemNameLookup: array[1..32] of TCssItemName =
     (
       (Item: Background;      Name: 'background' ),
       (Item: BackgroundColor; Name: 'background-color' ),
       (Item: Border;          Name: 'border' ),
+      (Item: Border;          Name: 'border-left' ),
+      (Item: BorderTop;       Name: 'border-top' ),
+      (Item: BorderRight;     Name: 'border-right' ),
+      (Item: BorderBottom;    Name: 'border-bottom' ),
+      (Item: BorderStyle ;    Name: 'border-style' ),
       (Item: Color;           Name: 'color' ),
       (Item: Cursor;          Name: 'cursor' ),
       (Item: Display;         Name: 'display' ),
@@ -336,6 +357,10 @@ const
       (Item: LetterSpacing;   Name: 'letter-spacing' ),
       (Item: LineHeight;      Name: 'line-height' ),
       (Item: Margin;          Name: 'margin' ),
+      (Item: MarginLeft;      Name: 'margin-left' ),
+      (Item: MarginRight;     Name: 'margin-right' ),
+      (Item: MarginTop;       Name: 'margin-top' ),
+      (Item: MarginBottom;    Name: 'margin-bottom' ),
       (Item: MaxWidth;        Name: 'max-width' ),
       (Item: Padding;         Name: 'padding' ),
       (Item: PaddingLeft;     Name: 'padding-left' ),
@@ -415,7 +440,7 @@ end;
 procedure THtmlDocument.BuildDefaultStyles;
 begin
   Styles.Clear;
-  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #666; line-height: 1.6; ';
+  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #666; line-height: 1.6; padding:20px;';
   Styles.P.AsString     := 'line-height: 1.6; font-family: Arial, Helvetica, sans-serif; color: #666;  font-size: 15px;';
   Styles.H1.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H2.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
@@ -445,7 +470,7 @@ begin
   FElements := CreateElementsList(Self);
   BuildDefaultStyles;
 
-  FContent := FElements.AddDiv('content');
+  FContent := FElements.AddBr.Elements.AddDiv('content');
   AClass := FCssClasses.AddClass('content');
   AClass.Width := '100%';
   AClass.MaxWidth := '600px';

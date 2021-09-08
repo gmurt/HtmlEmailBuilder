@@ -3,7 +3,7 @@ A set of Delphi interfaces for building HTML email templates
 
 I've added a simple demo project showing a few basic examples.
 
-# Note
+### Note
 
 The code is not perfect by any stretch of the imagination.  It was more a proof of concept which should save me a bit of time with my main project.
 
