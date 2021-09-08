@@ -38,7 +38,7 @@ type
   TBaseElement = class(TInterfacedObject, IHtmlElement)
   private
     FUuid: string;
-    FDocument: IHtmlDocument;
+    [weak] FDocument: IHtmlDocument;
     FAttributes: TStrings;
     FContent: string;
     FChildren: IElementList;
@@ -206,11 +206,11 @@ type
   TElementList = class(TInterfacedObject, IElementList)
   private
     FItems: TList<IHtmlElement>;
-    FDocument: IHtmlDocument;
+    [weak] FDocument: IHtmlDocument;
     function GetItem(AIndex: integer): IHtmlElement;
     function GetCount: integer;
   public
-    constructor Create(AHtmlDocument: IHtmlDocument); virtual;
+    constructor Create(AHtmlDocument: IHtmlDocument); reintroduce;
     destructor Destroy; override;
     procedure Add(AObj: IHtmlElement);
 

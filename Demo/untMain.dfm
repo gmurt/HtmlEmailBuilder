@@ -11,7 +11,6 @@ object frmMain: TfrmMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object Panel2: TPanel
@@ -35,7 +34,6 @@ object frmMain: TfrmMain
       TabWidth = 100
       object TabSheet1: TTabSheet
         Caption = 'Preview'
-        ExplicitLeft = 2
         object Bevel6: TBevel
           Left = 0
           Top = 0

@@ -51,7 +51,6 @@ type
     Bevel14: TBevel;
     Memo1: TMemo;
     Bevel5: TBevel;
-    procedure FormCreate(Sender: TObject);
     procedure SynEdit1Change(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure lbElementsClick(Sender: TObject);
@@ -213,11 +212,6 @@ procedure TfrmMain.DoShow;
 begin
   inherited;
   SynEdit1.OnChange(Self);
-end;
-
-procedure TfrmMain.FormCreate(Sender: TObject);
-begin
-  FHtml := CreateHtmlEmail;
 end;
 
 procedure TfrmMain.lbElementsClick(Sender: TObject);

@@ -216,7 +216,6 @@ type
   IHtmlDocument = interface
     ['{EDD4DF8A-78F5-4625-8F12-1E6C0891E00C}']
     function GetDocumentStyles: TDocumentStyles;
-    function GetCss: TCssClassList;
     function GetTitle: string;
     function GetHtmlText: string;
     function GetContent: IElementList;
@@ -381,13 +380,12 @@ type
     FContent: IElementDiv;
     function GetHtmlText: string;
     function GetContent: IElementList;
-    function GetCss: TCssClassList;
     function GetTitle: string;
     function GetDocumentStyles: TDocumentStyles;
     procedure SetTitle(AValue: string);
     procedure BuildDefaultStyles;
   public
-    constructor Create; reintroduce;
+    constructor Create; virtual;
     destructor Destroy; override;
     property Content: IElementList read GetContent;
     procedure Clear;
@@ -467,7 +465,7 @@ var
 begin
   FMeta.Clear;
   FCssClasses.Clear;
-  FElements := CreateElementsList(Self);
+ FElements := CreateElementsList(Self);
   BuildDefaultStyles;
 
   FContent := FElements.AddBr.Elements.AddDiv('content');
@@ -501,11 +499,6 @@ end;
 function THtmlDocument.GetContent: IElementList;
 begin
   Result := FContent.Elements;
-end;
-
-function THtmlDocument.GetCss: TCssClassList;
-begin
-  Result := FCssClasses;
 end;
 
 function THtmlDocument.GetDocumentStyles: TDocumentStyles;
