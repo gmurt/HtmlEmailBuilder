@@ -438,18 +438,18 @@ end;
 procedure THtmlDocument.BuildDefaultStyles;
 begin
   Styles.Clear;
-  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 15px; color: #666; line-height: 1.6; padding:20px;';
-  Styles.P.AsString     := 'line-height: 1.6; font-family: Arial, Helvetica, sans-serif; color: #666;  font-size: 15px;';
+  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #666; line-height: 1.6; padding:10px;';
+  Styles.P.AsString     := 'line-height: 1.6; font-family: Arial, Helvetica, sans-serif; color: #666;  font-size: 14px;';
   Styles.H1.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H2.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H3.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H4.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H5.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H6.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
-  Styles.HR.AsString := 'border: none; height: 1px; color: white; background-color: #ccc;';
+  Styles.HR.AsString := 'border: none; height: 1px; color: white; background-color: #ddd;';
   Styles.Button[bcBlue].AsString := 'background-color: #0d6efd; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
   Styles.Button[bcGrey].AsString := 'background-color: grey; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
-  Styles.Button[bcGreen].AsString := 'background-color: #198754; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
+  Styles.Button[bcGreen].AsString := 'background-color: #28A745; color: white; border: 1px solid #218938; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
   Styles.Button[bcRed].AsString := 'background-color: #dc3545; color: white; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
   Styles.Button[bcYellow].AsString := 'background-color: #ffc107; color: black; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
   Styles.Button[bcGrey].AsString := 'background-color: #adb5bd; color: black; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
@@ -476,8 +476,8 @@ begin
   AClass.Background := 'white';
   AClass.Border := '1px silver solid';
   AClass.TextAlign := 'center';
-  AClass.PaddingLeft := '16px';
-  AClass.PaddingRight := '16px';
+  AClass.PaddingLeft := '8px';
+  AClass.PaddingRight := '8px';
   AClass.LetterSpacing := '0.5px';
 end;
 
