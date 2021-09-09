@@ -32,7 +32,7 @@ function CreateElementsList(ADocument: IHtmlDocument): IElementList;
 
 implementation
 
-uses SysUtils, Net.HttpClient, System.NetEncoding;
+uses SysUtils, System.Net.HttpClient, System.NetEncoding;
 
 type
   TBaseElement = class(TInterfacedObject, IHtmlElement)
