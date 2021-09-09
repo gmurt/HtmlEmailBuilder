@@ -6,9 +6,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections, SynEditHighlighter, SynHighlighterHtml, SynEdit, Vcl.OleCtrls, SHDocVw, Vcl.ComCtrls,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections, Vcl.OleCtrls, SHDocVw, Vcl.ComCtrls,
   Vcl.ExtCtrls, System.ImageList, Vcl.ImgList,  Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, HtmlEmail,
+  Vcl.Imaging.pngimage, HtmlEmail
   {$IFDEF USE_TMS_ADVWEBBROWSER}
   , AdvCustomControl, AdvWebBrowser
   {$ENDIF}
@@ -16,13 +16,11 @@ uses
 
 type
   TfrmMain = class(TForm)
-    SynHTMLSyn1: TSynHTMLSyn;
     Panel2: TPanel;
     Panel1: TPanel;
     PageControl1: TPageControl;
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
-    SynEdit1: TSynEdit;
     PageControl2: TPageControl;
     TabSheet3: TTabSheet;
     lbElements: TListBox;
@@ -49,7 +47,11 @@ type
     Bevel14: TBevel;
     Memo1: TMemo;
     Bevel5: TBevel;
-    procedure SynEdit1Change(Sender: TObject);
+    memoHtml: TMemo;
+    Bevel15: TBevel;
+    Bevel16: TBevel;
+    Bevel17: TBevel;
+    Bevel18: TBevel;
     procedure Button2Click(Sender: TObject);
     procedure lbElementsClick(Sender: TObject);
     procedure lbElementsDrawItem(Control: TWinControl; Index: Integer; Rect: TRect; State: TOwnerDrawState);
@@ -57,6 +59,7 @@ type
     procedure Memo1Change(Sender: TObject);
     procedure Button1Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
+    procedure memoHtmlChange(Sender: TObject);
   private
     FHtml: IHtmlDocument;
     {$IFDEF USE_TMS_ADVWEBBROWSER}
@@ -117,7 +120,7 @@ begin
   p.Style.Color := 'grey';
   FHtml.Content.AddSpacer(50);
 
-  SynEdit1.Lines.Text := FHtml.HTML;
+  memoHtml.Lines.Text := FHtml.HTML;
 
   UpdateBrowser;
   UpdateElementList;
@@ -150,7 +153,7 @@ begin
   p.Style.Color := 'grey';
   FHtml.Content.AddSpacer(50);
 
-  SynEdit1.Lines.Text := FHtml.HTML;
+  memoHtml.Lines.Text := FHtml.HTML;
 
   UpdateBrowser;
   UpdateElementList;
@@ -186,7 +189,7 @@ begin
   FHtml.Content.AddImage(Application.Icon, alCenter).Style.Width := '32px';
   FHtml.Content.AddSpacer(50);
 
-  SynEdit1.Lines.Text := FHtml.HTML;
+  memoHtml.Lines.Text := FHtml.HTML;
 
   UpdateBrowser;
   UpdateElementList;
@@ -209,7 +212,7 @@ end;
 procedure TfrmMain.DoShow;
 begin
   inherited;
-  SynEdit1.OnChange(Self);
+  memoHtml.OnChange(Self);
 end;
 
 procedure TfrmMain.lbElementsClick(Sender: TObject);
@@ -219,7 +222,7 @@ begin
   if Supports(lbElements.Items.Objects[lbElements.ItemIndex], IHtmlElement, AElement) then
   begin
     FHtml.SelectElement(AElement);
-    SynEdit1.Text := FHtml.HTML;
+    memoHtml.Text := FHtml.HTML;
     UpdateBrowser;
     Memo1.Text := StringReplace(AElement.Content, '<br>', #13#10, [rfReplaceAll, rfIgnoreCase]);
   end;
@@ -252,13 +255,13 @@ begin
   if Supports(lbElements.Items.Objects[lbElements.ItemIndex], IHtmlElement, AElement) then
   begin
     AElement.Content := StringReplace(Memo1.Text, #10, '<br>',[rfReplaceAll]);
-    SynEdit1.Text := FHtml.HTML;
+    memoHtml.Text := FHtml.HTML;
     UpdateBrowser;
 
   end;
 end;
 
-procedure TfrmMain.SynEdit1Change(Sender: TObject);
+procedure TfrmMain.memoHtmlChange(Sender: TObject);
 begin
   UpdateBrowser;
 end;
@@ -270,7 +273,7 @@ var
 {$ENDIF}
 begin
   {$IFDEF USE_TMS_ADVWEBBROWSER}
-  FBrowser.LoadHTML(SynEdit1.Lines.Text);
+  FBrowser.LoadHTML(memoHtml.Lines.Text);
   {$ELSE}
 
   if not Assigned(FBrowser.Document) then
@@ -278,7 +281,7 @@ begin
 
   Doc := FBrowser.Document;
   Doc.Clear;
-  Doc.Write(SynEdit1.Lines.Text);
+  Doc.Write(memoHtml.Lines.Text);
   Doc.Close;
   {$ENDIF}
 end;

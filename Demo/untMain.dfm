@@ -27,7 +27,7 @@ object frmMain: TfrmMain
       Top = 4
       Width = 872
       Height = 772
-      ActivePage = TabSheet1
+      ActivePage = TabSheet2
       Align = alClient
       TabHeight = 30
       TabOrder = 0
@@ -81,34 +81,67 @@ object frmMain: TfrmMain
       object TabSheet2: TTabSheet
         Caption = 'HTML'
         ImageIndex = 1
-        object SynEdit1: TSynEdit
+        object Bevel15: TBevel
+          Left = 0
+          Top = 724
+          Width = 864
+          Height = 8
+          Align = alBottom
+          Shape = bsSpacer
+          ExplicitLeft = 4
+          ExplicitTop = 32
+          ExplicitWidth = 157
+        end
+        object Bevel16: TBevel
+          Left = 856
+          Top = 8
+          Width = 8
+          Height = 716
+          Align = alRight
+          Shape = bsSpacer
+          ExplicitLeft = 3
+          ExplicitTop = 26
+          ExplicitHeight = 149
+        end
+        object Bevel17: TBevel
           Left = 0
           Top = 0
           Width = 864
-          Height = 732
+          Height = 8
+          Align = alTop
+          Shape = bsSpacer
+          ExplicitTop = 16
+        end
+        object Bevel18: TBevel
+          Left = 0
+          Top = 8
+          Width = 8
+          Height = 716
+          Align = alLeft
+          Shape = bsSpacer
+          ExplicitLeft = 8
+          ExplicitTop = 16
+        end
+        object memoHtml: TMemo
+          Left = 8
+          Top = 8
+          Width = 848
+          Height = 716
           Align = alClient
           Font.Charset = DEFAULT_CHARSET
           Font.Color = clWindowText
-          Font.Height = -13
+          Font.Height = -11
           Font.Name = 'Courier New'
           Font.Style = []
+          Lines.Strings = (
+            'memoHtml')
+          ParentFont = False
           TabOrder = 0
-          CodeFolding.GutterShapeSize = 11
-          CodeFolding.CollapsedLineColor = clGrayText
-          CodeFolding.FolderBarLinesColor = clGrayText
-          CodeFolding.IndentGuidesColor = clGray
-          CodeFolding.IndentGuides = True
-          CodeFolding.ShowCollapsedLine = False
-          CodeFolding.ShowHintMark = True
-          UseCodeFolding = False
-          Gutter.Font.Charset = DEFAULT_CHARSET
-          Gutter.Font.Color = clWindowText
-          Gutter.Font.Height = -11
-          Gutter.Font.Name = 'Courier New'
-          Gutter.Font.Style = []
-          Highlighter = SynHTMLSyn1
-          OnChange = SynEdit1Change
-          FontSmoothing = fsmNone
+          OnChange = memoHtmlChange
+          ExplicitLeft = 280
+          ExplicitTop = 208
+          ExplicitWidth = 185
+          ExplicitHeight = 89
         end
       end
     end
@@ -469,12 +502,5 @@ object frmMain: TfrmMain
       TabOrder = 2
       OnClick = Button3Click
     end
-  end
-  object SynHTMLSyn1: TSynHTMLSyn
-    Options.AutoDetectEnabled = False
-    Options.AutoDetectLineLimit = 0
-    Options.Visible = False
-    Left = 728
-    Top = 208
   end
 end
