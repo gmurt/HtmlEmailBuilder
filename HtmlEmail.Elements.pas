@@ -295,7 +295,8 @@ begin
   if ACss = '' then
     ACss := FDocument.Styles.ClassAsSingleLine[Tag.ToLower];
 
-  ACss := ACss + ' ' + FCss.AsString;
+  //ACss := Trim(FCss.AsString + ' ' +ACss);
+  ACss := Trim(ACss+ ' ' +FCss.AsString);
 
   if FSelected then
     ACss := ACss + 'outline: red dashed 1px; outline-offset: 2px;';

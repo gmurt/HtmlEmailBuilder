@@ -104,6 +104,7 @@ type
     function AddH6(AText: string): IElementHeading;
     function AddHr: IElementHR;
 
+
     function AddButton(AText, AUrl: string; AColor: TButtonColor; const ATarget: THtmlLinkTarget = ltNone): IElementButton;
 
 
@@ -268,6 +269,7 @@ type
     property BorderBottom: string index BorderBottom read GetCssValue write SetCssValue;
     property Color: string index Color read GetCssValue write SetCssValue;
     property Font: string index Font read GetCssValue write SetCssValue;
+    property FontFamily: string index FontFamily read GetCssValue write SetCssValue;
     property FontSize: string index FontSize read GetCssValue write SetCssValue;
     property FontWeight: string index FontWeight read GetCssValue write SetCssValue;
     property Height: string index Height read GetCssValue write SetCssValue;
@@ -602,7 +604,7 @@ end;
 
 function TCssClass.GetCssValue(const Index: Integer): string;
 begin
-  Result := Item[TCssProperty(Index)].Value;
+  Result := StringReplace(Item[TCssProperty(Index)].Value, '''', '"', [rfReplaceAll]);
 end;
 
 function TCssClass.GetItem(AProperty: TCssProperty): TCssValue;
@@ -652,7 +654,7 @@ end;
 
 procedure TCssClass.SetCssValue(const Index: Integer; const Value: string);
 begin
-  Item[TCssProperty(Index)].Value := Value;
+  Item[TCssProperty(Index)].Value := StringReplace(Value, '"', '''', [rfReplaceAll]);
 end;
 
 { TCssClassList }

@@ -7,8 +7,8 @@ interface
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, System.Generics.Collections, SynEditHighlighter, SynHighlighterHtml, SynEdit, Vcl.OleCtrls, SHDocVw, Vcl.ComCtrls,
-  Vcl.ExtCtrls, System.ImageList, Vcl.ImgList, Vcl.VirtualImageList, Vcl.BaseImageCollection, Vcl.ImageCollection, Vcl.StdCtrls,
-  Vcl.Imaging.pngimage, HtmlEmail
+  Vcl.ExtCtrls, System.ImageList, Vcl.ImgList,  Vcl.StdCtrls,
+  Vcl.Imaging.pngimage, HtmlEmail,
   {$IFDEF USE_TMS_ADVWEBBROWSER}
   , AdvCustomControl, AdvWebBrowser
   {$ENDIF}
@@ -23,8 +23,6 @@ type
     TabSheet1: TTabSheet;
     TabSheet2: TTabSheet;
     SynEdit1: TSynEdit;
-    ImageCollection1: TImageCollection;
-    VirtualImageList1: TVirtualImageList;
     PageControl2: TPageControl;
     TabSheet3: TTabSheet;
     lbElements: TListBox;
