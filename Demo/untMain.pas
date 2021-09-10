@@ -105,12 +105,10 @@ begin
   FHtml.Content.AddImage(Image1.Picture.Graphic, alCenter).Style.Width := '60px';
   FHtml.Content.AddSpacer(10);
   FHtml.Content.AddHR;
-  FHtml.Content.AddSpacer(20);
+  FHtml.Content.AddSpacer(10);
   FHtml.Content.AddParagraph('Example showing bootstrap style alert elements...');
   FHtml.Content.AddAlert(C_WELCOME_TO_HTML_EMAIL, asSuccess);
-  FHtml.Content.AddSpacer(20);
   FHtml.Content.AddAlert(C_WELCOME_TO_HTML_EMAIL, asDanger);
-  FHtml.Content.AddSpacer(20);
   FHtml.Content.AddAlert(C_WELCOME_TO_HTML_EMAIL, asWarning);
   FHtml.Content.AddSpacer(20);
   FHtml.Content.AddHr;
@@ -118,6 +116,8 @@ begin
   p := FHtml.Content.AddParagraph(C_POWERED_BY);
   p.Style.FontSize := '11px';
   p.Style.Color := 'grey';
+
+  FHtml.Content.AddImage(Application.Icon, alCenter).Style.Width := '32px';
   FHtml.Content.AddSpacer(50);
 
   memoHtml.Lines.Text := FHtml.HTML;
@@ -151,6 +151,8 @@ begin
   p := FHtml.Content.AddParagraph(C_POWERED_BY);
   p.Style.FontSize := '11px';
   p.Style.Color := 'grey';
+
+  FHtml.Content.AddImage(Application.Icon, alCenter).Style.Width := '32px';
   FHtml.Content.AddSpacer(50);
 
   memoHtml.Lines.Text := FHtml.HTML;

@@ -26,13 +26,14 @@ unit HtmlEmail.Elements;
 
 interface
 
-uses HtmlEmail, Classes, System.Generics.Collections, Graphics;
+uses HtmlEmail;
 
 function CreateElementsList(ADocument: IHtmlDocument): IElementList;
 
+
 implementation
 
-uses SysUtils, System.Net.HttpClient, System.NetEncoding;
+uses SysUtils, System.Net.HttpClient, System.NetEncoding, Classes, System.Generics.Collections, Graphics;
 
 type
   TBaseElement = class(TInterfacedObject, IHtmlElement)
@@ -98,6 +99,9 @@ type
     function GetDisplayName: string; override;
     function GetTag: string; override;
     function GetTagDisplay: string; override;
+  public
+      constructor Create(ADocument: IHtmlDocument); override;
+
   end;
 
   
@@ -117,7 +121,7 @@ type
     function GetDisplayName: string; override;
   end;
 
-  TElementDivWrapped = class(TElement, IContainerDiv)
+ { TElementDivWrapped = class(TElement, IContainerDiv)
   private
     FContainerDiv: IElementDiv;
     function GetContainerDiv: IElementDiv;
@@ -126,7 +130,7 @@ type
   public
     constructor Create(AHtmlDocument: IHtmlDocument); override;
     property ContainerDiv: IElementDiv read GetContainerDiv;
-  end;
+  end;   }
 
   TElementH1 = class(TElement, IElementHeading)
   protected
@@ -182,7 +186,7 @@ type
     function GetTag: string; override;
   end;
 
-  TElementImage = class(TElementDivWrapped, IElementImage)
+  TElementImage = class(TElement, IElementImage)
   protected
     function GetSrc: string;
     procedure SetSrc(AValue: string);
@@ -196,11 +200,12 @@ type
     function GetTag: string; override;
   end;
 
-  THtmlElementAlert = class(TElementDiv, IHtmlElementAlert)
+  THtmlElementAlert = class(TElement, IHtmlElementAlert)
   protected
     function GetDisplayName: string; override;
     function GetAlertStyle: TAlertStyle;
     procedure SetAlertStyle(const Value: TAlertStyle);
+    function GetTag: string; override;
   end;
 
   TElementList = class(TInterfacedObject, IElementList)
@@ -269,6 +274,8 @@ begin
   FAttributes := TStringList.Create;
   FCss := TCssClass.Create;
   FSelected := False;
+  //FCss.Width := '100%';
+  FCss.Margin := '8px;';
 end;
 
 destructor TBaseElement.Destroy;
@@ -295,13 +302,13 @@ begin
   if ACss = '' then
     ACss := FDocument.Styles.ClassAsSingleLine[Tag.ToLower];
 
-  //ACss := Trim(FCss.AsString + ' ' +ACss);
   ACss := Trim(ACss+ ' ' +FCss.AsString);
 
   if FSelected then
     ACss := ACss + 'outline: red dashed 1px; outline-offset: 2px;';
-  if Self is TElementSpacer then ACss := ACss +'width: 100%; ';
-
+  //if Self is TElementSpacer then ACss := ACss +'width: calc(100% - px); ';
+  if Self is TElementDiv then ACss := ACss + 'border-collapse: collapse; ';
+  
 
   for ICount := 0 to FAttributes.Count-1 do
   begin
@@ -463,7 +470,6 @@ function TElementList.AddAlert(AText: string; AAlertStyle: TAlertStyle): IHtmlEl
 begin
   Result := THtmlElementAlert.Create(FDocument);
   Result.AlertStyle := AAlertStyle;
-  Result.Style.Width := '100%';
   Result.Content := AText;
   Add(Result);
 end;
@@ -497,6 +503,7 @@ function TElementList.AddDiv(const AClass: string = ''): IElementDiv;
 begin
   Result := TElementDiv.Create(FDocument);
   Result.CssClass := AClass;
+
   Add(Result);
 end;
 
@@ -572,10 +579,11 @@ begin
     Result := TElementImage.Create(FDocument);
     Result.Attribute['src'] := AUrl;
     Result.Attribute['alt'] := 'image';
-    case AAlignment of
+
+   { case AAlignment of
       alCenter: Result.ContainerDiv.Attribute['align'] := 'center';
       alRight: Result.ContainerDiv.Attribute['align'] := 'right';
-    end;
+    end;    }
 
     if APadding > 0 then Result.Style.Padding := APadding.ToString+'px';
     Result.Style.Margin := '0px';
@@ -605,10 +613,10 @@ begin
     Result.Attribute['src'] := 'data:image/jpeg;base64,'+ABase64.DataString;
 
     Result.Attribute['alt'] := 'image';
-    case AAlignment of
+   { case AAlignment of
       alCenter: Result.ContainerDiv.Attribute['align'] := 'center';
       alRight: Result.ContainerDiv.Attribute['align'] := 'right';
-    end;
+    end;  }
 
 
     if APadding > 0 then Result.Style.Padding := APadding.ToString+'px';
@@ -639,7 +647,6 @@ function TElementList.AddSpacer(AHeight: integer): IElementSpacer;
 begin
   Result := TElementSpacer.Create(FDocument);
   Result.Style.Height := AHeight.ToString+'px';
-  Result.Style.Width := '100%';
   Add(Result);
 end;
 
@@ -689,6 +696,13 @@ end;
 { TElementDiv }
 
 
+constructor TElementDiv.Create(ADocument: IHtmlDocument);
+begin
+  inherited;
+  FCss.Width := '100%';
+  FCss.TableLayout := 'fixed';
+end;
+
 function TElementDiv.GetDisplayName: string;
 begin
   Result := 'Spacer';
@@ -715,13 +729,15 @@ function TElementBR.GetTag: string;
 begin
   Result := 'br';
 end;
-
+      (*
 { TElementDivWrapped }
 
 constructor TElementDivWrapped.Create;
 begin
   inherited;
-  FContainerDiv := TElementDiv.Create(FDocument);
+  //FContainerDiv := TElementDiv.Create(FDocument);
+  //FContainerDiv.Style.Padding := '30px';
+  FContainerDiv.Style.Width := '100%';
 end;
 
 function TElementDivWrapped.GetContainerDiv: IElementDiv;
@@ -736,13 +752,13 @@ begin
   AHtml := TStringList.Create;
   try
     inherited GetHtml(AHtml);
-    AHtml.Text := '<table '+FContainerDiv.GetAttributesSingleLine+' cellpadding="0" cellspacing="0" border="0" ><tr><td>'+AHtml.Text;
+    AHtml.Text := '<table '+FContainerDiv.GetAttributesSingleLine+' '+{cellpadding="0" cellspacing="0"} 'border="0" ><tr><td>'+AHtml.Text;
     AHtml.Text := AHtml.Text + '</td></tr></table>';
     ASource.AddStrings(AHtml);
   finally
     AHtml.Free;
   end;
-end;
+end;     *)
 
 { TElementButton }
 
@@ -798,6 +814,11 @@ end;
 function THtmlElementAlert.GetDisplayName: string;
 begin
   Result := 'alert';
+end;
+
+function THtmlElementAlert.GetTag: string;
+begin
+  Result := 'div';
 end;
 
 procedure THtmlElementAlert.SetAlertStyle(const Value: TAlertStyle);

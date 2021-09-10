@@ -27,7 +27,7 @@ object frmMain: TfrmMain
       Top = 4
       Width = 872
       Height = 772
-      ActivePage = TabSheet2
+      ActivePage = TabSheet1
       Align = alClient
       TabHeight = 30
       TabOrder = 0
@@ -138,10 +138,6 @@ object frmMain: TfrmMain
           ParentFont = False
           TabOrder = 0
           OnChange = memoHtmlChange
-          ExplicitLeft = 280
-          ExplicitTop = 208
-          ExplicitWidth = 185
-          ExplicitHeight = 89
         end
       end
     end

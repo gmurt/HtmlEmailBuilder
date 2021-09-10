@@ -38,6 +38,7 @@ type
 
   TCssProperty = (Background,
                   BackgroundColor,
+
                   Border,
                   BorderLeft,
                   BorderTop,
@@ -65,6 +66,7 @@ type
                   Padding,
                   PaddingLeft,
                   PaddingRight,
+                  TableLayout,
                   TextAlign,
                   TextDecoration,
                   Width,
@@ -160,6 +162,13 @@ type
     ['{BEB42585-81C1-4182-AA05-D94CA2A706F8}']
   end;
 
+  IContainerDiv = interface(IHtmlElement)
+    ['{DCE1669D-4E5B-42F8-9C44-2FC40D8763AC}']
+    function GetContainerDiv: IElementDiv;
+    property ContainerDiv: IElementDiv read GetContainerDiv;
+  end;
+
+
   IElementLink = interface(IHtmlElement)
     ['{E60C9004-8FBF-4AD9-B7DF-E2EADFC9FF51}']
     function GetHref: string;
@@ -191,13 +200,7 @@ type
     ['{CB81149E-4480-44C9-BDB6-4AA48E94F1F6}']
   end;
 
-  IContainerDiv = interface(IHtmlElement)
-    ['{DCE1669D-4E5B-42F8-9C44-2FC40D8763AC}']
-    function GetContainerDiv: IElementDiv;
-    property ContainerDiv: IElementDiv read GetContainerDiv;
-  end;
-
-  IElementImage = interface(IContainerDiv)
+  IElementImage = interface(IHtmlElement)
     ['{F1D4FD5E-A774-415C-8D51-6523222D0017}']
     function GetSrc: string;
     procedure SetSrc(AValue: string);
@@ -268,6 +271,8 @@ type
     property BorderRight: string index BorderRight read GetCssValue write SetCssValue;
     property BorderBottom: string index BorderBottom read GetCssValue write SetCssValue;
     property Color: string index Color read GetCssValue write SetCssValue;
+    property Display: string index Display read GetCssValue write SetCssValue;
+
     property Font: string index Font read GetCssValue write SetCssValue;
     property FontFamily: string index FontFamily read GetCssValue write SetCssValue;
     property FontSize: string index FontSize read GetCssValue write SetCssValue;
@@ -283,6 +288,7 @@ type
     property Padding: string index Padding read GetCssValue write SetCssValue;
     property PaddingLeft: string index PaddingLeft read GetCssValue write SetCssValue;
     property PaddingRight: string index PaddingRight read GetCssValue write SetCssValue;
+    property TableLayout: string index TableLayout read GetCssValue write SetCssValue;
     property TextAlign: string index TextAlign read GetCssValue write SetCssValue;
     property Width: string index Width read GetCssValue write SetCssValue;
   end;
@@ -336,7 +342,7 @@ implementation
 uses SysUtils, HtmlEmail.Elements;
 
 const
-  TCssItemNameLookup: array[1..32] of TCssItemName =
+  TCssItemNameLookup: array[1..33] of TCssItemName =
     (
       (Item: Background;      Name: 'background' ),
       (Item: BackgroundColor; Name: 'background-color' ),
@@ -366,6 +372,7 @@ const
       (Item: Padding;         Name: 'padding' ),
       (Item: PaddingLeft;     Name: 'padding-left' ),
       (Item: PaddingRight;    Name: 'padding-right' ),
+      (Item: TableLayout;     Name: 'table-layout' ),
       (Item: TextAlign;       Name: 'text-align' ),
       (Item: TextDecoration;  Name: 'text-decoration' ),
       (Item: Width;           Name: 'width' ),
@@ -440,7 +447,7 @@ end;
 procedure THtmlDocument.BuildDefaultStyles;
 begin
   Styles.Clear;
-  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #666; line-height: 1.6; padding:10px;';
+  Styles.Body.AsString  := 'background: #efefef; line-height: 40px; font-family: Arial, Helvetica, sans-serif; font-size: 14px; color: #666; line-height: 1.6; padding:8px;';
   Styles.P.AsString     := 'line-height: 1.6; font-family: Arial, Helvetica, sans-serif; color: #666;  font-size: 14px;';
   Styles.H1.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
   Styles.H2.AsString    := 'font-family: Tahoma, Geneva, sans-serif; color: #005CB7; font-weight: 400;';
@@ -456,9 +463,9 @@ begin
   Styles.Button[bcYellow].AsString := 'background-color: #ffc107; color: black; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
   Styles.Button[bcGrey].AsString := 'background-color: #adb5bd; color: black; border: none; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin: 4px 2px; cursor: pointer;';
 
-  Styles.Alert[asSuccess].AsString := 'color: #3c763d;background-color: #dff0d8; padding: 10px; margin-bottom: 20px; border: 1px solid #BADFAA; border-radius: 10px; text-align: center;';
-  Styles.Alert[asDanger].AsString := 'color: #B20000; background-color: #FFB0B0; padding: 10px; margin-bottom: 20px; border: 1px solid #FF9999; border-radius: 10px; text-align: center;';
-  Styles.Alert[asWarning].AsString := 'color: #B28500; background-color: #FFFFBF; padding: 10px; margin-bottom: 20px; border: 1px solid #FFDC73; border-radius: 10px; text-align: center;';
+  Styles.Alert[asSuccess].AsString := 'color: #3c763d;background-color: #dff0d8; padding: 10px;  border: 1px solid #BADFAA; border-radius: 10px; text-align: center;';
+  Styles.Alert[asDanger].AsString := 'color: #B20000; background-color: #FFB0B0; padding: 10px; border: 1px solid #FF9999; border-radius: 10px; text-align: center;';
+  Styles.Alert[asWarning].AsString := 'color: #B28500; background-color: #FFFFBF; padding: 10px; border: 1px solid #FFDC73; border-radius: 10px; text-align: center;';
 end;
 
 procedure THtmlDocument.Clear;
@@ -471,16 +478,26 @@ begin
   BuildDefaultStyles;
 
   FContent := FElements.AddBr.Elements.AddDiv('content');
-  AClass := FCssClasses.AddClass('content');
-  AClass.Width := '100%';
+  FContent.Style.Width := 'auto';
+  FContent.Style.Display := 'block';
+  FContent.Style.MaxWidth := '600px';
+  FContent.Style.Margin := 'auto';
+  FContent.Style.Background := 'white';
+  FContent.Style.Border := '1px silver solid';
+  FContent.Style.TextAlign := 'center';
+  FContent.Style.Padding := '0px';
+  FContent.Style.LetterSpacing := '0.5px';
+
+  {AClass := FCssClasses.AddClass('content');
+  AClass.Width := 'auto';
+  AClass.Display := 'block';
   AClass.MaxWidth := '600px';
   AClass.Margin := 'auto';
   AClass.Background := 'white';
   AClass.Border := '1px silver solid';
   AClass.TextAlign := 'center';
-  AClass.PaddingLeft := '8px';
-  AClass.PaddingRight := '8px';
-  AClass.LetterSpacing := '0.5px';
+  AClass.Padding := '0px';
+  AClass.LetterSpacing := '0.5px';}
 end;
 
 constructor THtmlDocument.Create;
@@ -538,8 +555,11 @@ begin
     AStrings.Add('<html>');
     AStrings.Add('<head>');
     AStrings.Add('<title>'+FTitle+'</title>');
-    AStrings.Add('<meta charset="utf-8" http-equiv="X-UA-Compatible" content="IE=edge"/>');
-    AStrings.Add('<meta http-equiv="Content-Type" content="text/html charset=UTF-8" />');
+
+    AStrings.Add('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">');
+    AStrings.Add('<meta name="viewport" content="width=device-width, initial-scale=1">');
+    AStrings.Add('<meta http-equiv="X-UA-Compatible" content="IE=edge">');
+
     for AMeta in FMeta do
     begin
       if Trim(AMeta) <> '' then AStrings.Add('<meta '+AMeta+'/>');
